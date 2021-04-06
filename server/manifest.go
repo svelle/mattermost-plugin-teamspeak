@@ -12,9 +12,13 @@ var manifest *model.Manifest
 
 const manifestStr = `
 {
-  "id": "com.mattermost.plugin-starter-template",
-  "name": "Plugin Starter Template",
-  "description": "This plugin serves as a starting point for writing a Mattermost plugin.",
+  "id": "dev.svelle.plugin-teamspeak",
+  "name": "Mattermost Teamspeak Plugin",
+  "description": "This plugin shows a list of channels and online users of a specified teamspeak server",
+  "homepage_url": "https://github.com/svelle/mattermost-plugin-teamspeak",
+  "support_url": "https://github.com/svelle/mattermost-plugin-teamspeak/issues",
+  "release_notes_url": "https://github.com/svelle/mattermost-plugin-teamspeak/releases/tag/v0.1.0",
+  "icon_path": "assets/starter-template-icon.svg",
   "version": "0.1.0",
   "min_server_version": "5.12.0",
   "server": {
@@ -29,9 +33,34 @@ const manifestStr = `
     "bundle_path": "webapp/dist/main.js"
   },
   "settings_schema": {
-    "header": "",
-    "footer": "",
-    "settings": []
+    "header": "TeamSpeak plugin configuration",
+    "footer": "For WebQuery help see: https://community.teamspeak.com/t/webquery-discussion-help-3-12-0-onwards/7184",
+    "settings": [
+      {
+        "key": "WebQueryURL",
+        "display_name": "WebQuery URL:",
+        "type": "text",
+        "help_text": "The URL used to connect to the WebQuery api. Ex: http://127.0.0.1:10080",
+        "placeholder": "http://127.0.0.1:10080",
+        "default": "http://127.0.0.1:10080"
+      },
+      {
+        "key": "APIKey",
+        "display_name": "API Key:",
+        "type": "text",
+        "help_text": "The API Key used by the query client to connect to the Teamspeak API",
+        "placeholder": "BAByFoiEXZfnSJyE6dbXFiW_nn_SdwkclpKNz9j",
+        "default": ""
+      },
+      {
+        "key": "ServerId",
+        "display_name": "Server Id:",
+        "type": "number",
+        "help_text": "If multiple TeamSpeak servers are hosted on the same server you may need to change this.",
+        "placeholder": "1",
+        "default": "1"
+      }
+    ]
   }
 }
 `
