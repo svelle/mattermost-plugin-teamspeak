@@ -1,17 +1,11 @@
 import React from 'react';
 
-type Props = {
-    shouldHighlight: boolean,
-};
+const ChannelHeaderButton = () => (
+    <img
+        src='//u5b.de/teamspeak5.svg'
+        className='ts3app-icon'
+    />
+);
 
-export default function ChannelHeaderButton(props: Props) {
-    let btnClass = 'icon fa fa-teamspeak';
-    if (props.shouldHighlight) {
-        btnClass += 'ts3-plugin-icon--activate';
-    }
-
-    return (
-        <i className={btnClass}/>
-    );
-}
+export default ChannelHeaderButton;
 

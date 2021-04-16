@@ -1,0 +1,83 @@
+.ts3app {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.ts3app-channellist {
+  width: calc(100% - 60px);
+}
+
+.ts3app-channel {
+  color: var(--sidebar-text);
+  margin: 10px 0;
+  box-shadow: 0 0 1px var(--sidebar-header-bg);
+  border: solid 3px var(--sidebar-text-hover-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.ts3app-spacer {
+  border: solid 3px transparent;
+  box-shadow: none;
+  margin: 0;
+  color: var(--sidebar-text);
+  font-size: 0.8rem;
+  background-color: var(--sidebar-bg);
+}
+
+.ts3app-channel:nth-child(2n + 1) {
+  background-color: var(--sidebar-text-hover-bg);
+}
+
+.ts3app-channel .ts3app-description {
+  font-size: 0.7rem;
+  color: var(--sidebar-text);
+}
+
+.ts3app-channel .ts3app-tooltiptext,
+.ts3app-spacer .ts3app-tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text-active-border);
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 2px;
+  border: 1px solid var(--sidebar-text-active-border);
+  z-index: 1;
+  position: absolute;
+  top: 1.5rem;
+  left: calc(50% - 60px);
+}
+
+.ts3app-channel:hover .ts3app-tooltiptext {
+  visibility: visible;
+}
+
+.ts3app-client {
+  color: var(--online-indicator);
+  margin: 0 10px;
+  position: relative;
+}
+
+.ts3app-client[data-muted="true"] {
+  color: var(--away-indicator);
+}
+
+.ts3app-client[data-deafened="true"] {
+  color: var(--dnd-indicator);
+}
+
+.ts3app-client .icon {
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+
+.ts3app-icon {
+  height: 24px;
+  object-fit: contain;
+}

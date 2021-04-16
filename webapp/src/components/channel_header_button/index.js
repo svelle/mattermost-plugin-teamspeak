@@ -2,26 +2,17 @@
 // See LICENSE.txt for license information.
 
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-
-import {isRhsVisible} from 'selectors';
-
-import {showRHSPlugin} from 'actions';
 
 import ChannelHeaderButton from './channel_header_button';
 
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {
-        shouldHighlight: isRhsVisible(state),
+        shouldHighlight: false,
     };
 }
 
-function mapDispatchToProp(dispatch) {
-    return {
-        actions: bindActionCreators({
-            showRHSPlugin,
-        }, dispatch),
-    };
+function mapDispatchToProp() {
+    return {};
 }
 
 export default connect(mapStateToProps, mapDispatchToProp)(ChannelHeaderButton);
