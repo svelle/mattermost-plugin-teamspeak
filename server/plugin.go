@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/mattermost/mattermost-server/v5/plugin"
+	"github.com/mattermost/mattermost/server/public/plugin"
 )
 
 // Plugin implements the interface expected by the Mattermost server to communicate between the server and plugin processes.
@@ -211,7 +211,7 @@ func (p *Plugin) UpdateChannelList() (err error) {
 		sort.Sort(ts3ChannelByOrderID(p.channels))
 		return nil
 	}
-	return fmt.Errorf(channelList.Status.Message)
+	return fmt.Errorf("%s", channelList.Status.Message)
 }
 
 func (p *Plugin) UpdateClientList() (err error) {
@@ -249,7 +249,7 @@ func (p *Plugin) UpdateClientList() (err error) {
 		}
 		return nil
 	}
-	return fmt.Errorf(clientList.Status.Message)
+	return fmt.Errorf("%s", clientList.Status.Message)
 }
 
 func (p *Plugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Request) {

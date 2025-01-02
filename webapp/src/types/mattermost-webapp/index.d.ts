@@ -1,5 +1,8 @@
+// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// See LICENSE.txt for license information.
+
 export interface PluginRegistry {
-    registerPostTypeComponent(typeName: string, component: React.ElementType)
+    registerPostTypeComponent(typeName: string, component: React.ElementType);
 
     // Add more if needed from https://developers.mattermost.com/extend/plugins/webapp/reference
 
@@ -14,7 +17,7 @@ export interface PluginRegistry {
     * - hideRHSPlugin: the action to dispatch that will close the RHS
     * - toggleRHSPlugin: the action to dispatch that will toggle the RHS
     */
-    registerRightHandSidebarComponent(component, title)
+    registerRightHandSidebarComponent(component, title);
 
     /**
     * Add a button to the channel header. If there are more than one buttons registered by any
@@ -25,5 +28,5 @@ export interface PluginRegistry {
     * - dropdown_text - string or React element shown for the dropdown button description
     * - tooltip_text - string shown for tooltip appear on hover
     */
-    registerChannelHeaderButtonAction(icon, action, dropdownText, tooltipText)
+    registerChannelHeaderButtonAction(icon, action, dropdownText, tooltipText);
 }

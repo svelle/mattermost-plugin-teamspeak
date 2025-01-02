@@ -1,34 +1,37 @@
-import {useEffect, useState} from 'react';
+// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// See LICENSE.txt for license information.
 
-import {id as pluginId} from '../../manifest';
+import React, {useEffect, useState} from 'react';
 
 import Channel from './Channel';
 
-function sort_channels(channels, clients) {
-    const channel_map = new Map(
+import manifest from '../../manifest';
+
+function sortChannels(channels, clients) {
+    const channelMap = new Map(
         channels.map((channel) => [channel.channel_order || 0, channel]),
     );
-    const sorted_channels = [];
+    const sortedChannels = [];
     for (
-        let channel = channel_map.get(0);
+        let channel = channelMap.get(0);
         channel != null;
-        channel = channel_map.get(channel.cid)
+        channel = channelMap.get(channel.cid)
     ) {
         channel.clients = (clients[channel.cid] || []).filter(
             (client) => client.client_type !== '1',
         );
         if (channel.clients.length > 0) {
-            sorted_channels.push(channel);
+            sortedChannels.push(channel);
         }
     }
-    return sorted_channels;
+    return sortedChannels;
 }
 
 const ChannelList = () => {
     const [channels, setChannels] = useState(null);
     useEffect(() => {
         (async () => {
-            const resp = await fetch(`/plugins/${pluginId}/info`);
+            const resp = await fetch(`/plugins/${manifest.id}/info`);
             if (!resp.ok) {
                 return;
             }
@@ -36,7 +39,7 @@ const ChannelList = () => {
             if (data.Channels == null) {
                 return;
             }
-            setChannels(sort_channels(data.Channels, data.Clients));
+            setChannels(sortChannels(data.Channels, data.Clients));
         })();
     }, [setChannels]);
     if (channels == null) {

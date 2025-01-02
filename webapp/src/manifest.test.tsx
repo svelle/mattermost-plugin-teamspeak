@@ -1,4 +1,9 @@
-import manifest, {id, version} from './manifest';
+// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// See LICENSE.txt for license information.
+
+import manifest from './manifest';
+const version = manifest.version;
+const id = manifest.id;
 
 test('Plugin manifest, id and version are defined', () => {
     expect(manifest).toBeDefined();
