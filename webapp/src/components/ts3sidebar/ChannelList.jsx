@@ -8,23 +8,38 @@ import Channel from './Channel';
 import manifest from '../../manifest';
 
 function sortChannels(channels, clients) {
-    const channelMap = new Map(
-        channels.map((channel) => [channel.channel_order || 0, channel]),
+    const roots = {};
+    const channelMap = new Map(channels.
+        map((channel) => {
+            channel.clients = (clients[channel.cid] || []).filter(
+                (client) => client.client_type !== '1',
+            );
+            channel.children = {};
+            channel.channel_order = Number(channel.channel_order) || 0;
+            channel.cid = Number(channel.cid) || 0;
+            channel.pid = Number(channel.pid) || 0;
+            if (channel.pid === 0) {
+                roots[channel.channel_order] = channel;
+            }
+            return [channel.cid, channel];
+        }),
     );
-    const sortedChannels = [];
-    for (
-        let channel = channelMap.get(0);
-        channel != null;
-        channel = channelMap.get(channel.cid)
-    ) {
-        channel.clients = (clients[channel.cid] || []).filter(
-            (client) => client.client_type !== '1',
-        );
-        if (channel.clients.length > 0) {
-            sortedChannels.push(channel);
+    channelMap.values().forEach((channel) => {
+        if (channel.pid !== 0) {
+            channelMap.get(channel.pid).children[channel.channel_order] = channel;
         }
-    }
-    return sortedChannels;
+    });
+    const channelList = [];
+    const walker = (root) => {
+        for (let channel = root[0]; channel != null; channel = root[channel.cid]) {
+            channelList.push(channel);
+            if (channel.children[0] != null) {
+                walker(channel.children);
+            }
+        }
+    };
+    walker(roots);
+    return channelList.filter((channel) => channel.clients.length > 0);
 }
 
 const ChannelList = () => {
