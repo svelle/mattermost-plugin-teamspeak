@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const Client = ({info}) => {
+    if (info.client_platform === 'os x') {
+        info.client_platform = 'apple';
+    }
     return (
         <div
             className='ts3app-client'
