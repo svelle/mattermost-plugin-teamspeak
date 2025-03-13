@@ -23,7 +23,7 @@ type Plugin struct { //nolint:govet
 	// setConfiguration for usage.
 	configuration     *configuration
 	channels          []ts3ChannelInfo
-	clients           map[int32][]ts3ClientInfo
+	clients           map[int64][]ts3ClientInfo
 	cancelBgWorker    context.CancelFunc
 	configurationLock sync.RWMutex
 	plugin.MattermostPlugin
@@ -75,34 +75,34 @@ func (t *ts3Boolean) UnmarshalJSON(b []byte) (err error) {
 
 //nolint:govet
 type ts3ClientInfo struct {
-	CID                                  int32      `json:"cid,omitempty,string"`
-	CLID                                 int32      `json:"clid,omitempty,string"`
+	CID                                  int64      `json:"cid,omitempty,string"`
+	CLID                                 int64      `json:"clid,omitempty,string"`
 	ClientAway                           ts3Boolean `json:"client_away,omitempty"`
 	ClientAwayMessage                    string     `json:"client_away_message,omitempty"`
 	ClientBadges                         string     `json:"client_badges,omitempty"`
-	ClientChannelGroupID                 int32      `json:"client_channel_group_id,omitempty,string"`
-	ClientChannelGroupInheritedChannelID int32      `json:"client_channel_group_inherited_channel_id,omitempty,string"`
+	ClientChannelGroupID                 int64      `json:"client_channel_group_id,omitempty,string"`
+	ClientChannelGroupInheritedChannelID int64      `json:"client_channel_group_inherited_channel_id,omitempty,string"`
 	ClientCountry                        string     `json:"client_country,omitempty"`
-	ClientCreated                        int32      `json:"client_created,omitempty,string"`
-	ClientDatabaseID                     int32      `json:"client_database_id,omitempty,string"`
+	ClientCreated                        int64      `json:"client_created,omitempty,string"`
+	ClientDatabaseID                     int64      `json:"client_database_id,omitempty,string"`
 	ClientEstimatedLocation              string     `json:"client_estimated_location,omitempty"`
-	ClientFlagTalking                    int32      `json:"client_flag_talking,omitempty,string"`
-	ClientIconID                         int32      `json:"client_icon_id,omitempty,string"`
-	ClientIdleTime                       int32      `json:"client_idle_time,omitempty,string"`
+	ClientFlagTalking                    int64      `json:"client_flag_talking,omitempty,string"`
+	ClientIconID                         int64      `json:"client_icon_id,omitempty,string"`
+	ClientIdleTime                       int64      `json:"client_idle_time,omitempty,string"`
 	ClientInputHardware                  ts3Boolean `json:"client_input_hardware,omitempty"`
 	ClientInputMuted                     ts3Boolean `json:"client_input_muted,omitempty"`
 	ClientIsChannelCommander             ts3Boolean `json:"client_is_channel_commander,omitempty"`
 	ClientIsPrioritySpeaker              ts3Boolean `json:"client_is_priority_speaker,omitempty"`
 	ClientIsRecording                    ts3Boolean `json:"client_is_recording,omitempty"`
 	ClientIsTalker                       ts3Boolean `json:"client_is_talker,omitempty"`
-	ClientLastConnected                  int32      `json:"client_lastconnected,omitempty,string"`
+	ClientLastConnected                  int64      `json:"client_lastconnected,omitempty,string"`
 	ClientNickname                       string     `json:"client_nickname,omitempty"`
 	ClientOutputHardware                 ts3Boolean `json:"client_output_hardware,omitempty"`
 	ClientOutputMuted                    ts3Boolean `json:"client_output_muted,omitempty"`
 	ClientPlatform                       string     `json:"client_platform,omitempty"`
 	ClientServerGroups                   string     `json:"client_servergroups,omitempty"`
-	ClientTalkPower                      int32      `json:"client_talk_power,omitempty,string"`
-	ClientType                           int32      `json:"client_type,omitempty,string"`
+	ClientTalkPower                      int64      `json:"client_talk_power,omitempty,string"`
+	ClientType                           int64      `json:"client_type,omitempty,string"`
 	ClientUniqueIdentifier               string     `json:"client_unique_identifier,omitempty"`
 	ClientVersion                        string     `json:"client_version,omitempty"`
 	ConnectionClientIP                   string     `json:"connection_client_ip,omitempty"`
@@ -110,27 +110,27 @@ type ts3ClientInfo struct {
 
 //nolint:govet
 type ts3ChannelInfo struct {
-	CID                         int        `json:"cid,omitempty,string"`
-	ChannelBannerMode           int        `json:"channel_banner_mode,omitempty,string"`
+	CID                         int64      `json:"cid,omitempty,string"`
+	ChannelBannerMode           int64      `json:"channel_banner_mode,omitempty,string"`
 	ChannelBannerGraphicURL     string     `json:"channel_banner_gfx_url,omitempty"`
-	ChannelCodec                int        `json:"channel_codec,omitempty,string"`
-	ChannelCodecQuality         int        `json:"channel_codec_quality,omitempty,string"`
+	ChannelCodec                int64      `json:"channel_codec,omitempty,string"`
+	ChannelCodecQuality         int64      `json:"channel_codec_quality,omitempty,string"`
 	ChannelFlagDefault          ts3Boolean `json:"channel_flag_default,omitempty"`
 	ChannelFlagPassword         ts3Boolean `json:"channel_flag_password,omitempty"`
 	ChannelFlagPermanent        ts3Boolean `json:"channel_flag_permanent,omitempty"`
 	ChannelFlagSemiPermanent    ts3Boolean `json:"channel_flag_semi_permanent,omitempty"`
-	ChannelIconID               int        `json:"channel_icon_id,omitempty,string"`
-	ChannelMaxClients           int        `json:"channel_maxclients,omitempty,string"`
-	ChannelMaxFamilyClients     int        `json:"channel_maxfamilyclients,omitempty,string"`
+	ChannelIconID               int64      `json:"channel_icon_id,omitempty,string"`
+	ChannelMaxClients           int64      `json:"channel_maxclients,omitempty,string"`
+	ChannelMaxFamilyClients     int64      `json:"channel_maxfamilyclients,omitempty,string"`
 	ChannelName                 string     `json:"channel_name,omitempty"`
-	ChannelNeededSubscribePower int        `json:"channel_needed_subscribe_power,omitempty,string"`
-	ChannelNeededTalkPower      int        `json:"channel_needed_talk_power,omitempty,string"`
-	ChannelOrder                int        `json:"channel_order,omitempty,string"`
+	ChannelNeededSubscribePower int64      `json:"channel_needed_subscribe_power,omitempty,string"`
+	ChannelNeededTalkPower      int64      `json:"channel_needed_talk_power,omitempty,string"`
+	ChannelOrder                int64      `json:"channel_order,omitempty,string"`
 	ChannelTopic                string     `json:"channel_topic,omitempty"`
-	PID                         int        `json:"pid,omitempty,string"`
-	SecondsEmpty                int        `json:"seconds_empty,omitempty,string"`
-	TotalClients                int        `json:"total_clients,omitempty,string"`
-	TotalClientsFamily          int        `json:"total_clients_family,omitempty,string"`
+	PID                         int64      `json:"pid,omitempty,string"`
+	SecondsEmpty                int64      `json:"seconds_empty,omitempty,string"`
+	TotalClients                int64      `json:"total_clients,omitempty,string"`
+	TotalClientsFamily          int64      `json:"total_clients_family,omitempty,string"`
 }
 
 type ts3ChannelListResponse struct {
@@ -243,7 +243,7 @@ func (p *Plugin) UpdateClientList() (err error) {
 		return err
 	}
 	if clientList.Status.Code == 0 {
-		p.clients = make(map[int32][]ts3ClientInfo)
+		p.clients = make(map[int64][]ts3ClientInfo)
 		for _, client := range clientList.Body {
 			p.clients[client.CID] = append(p.clients[client.CID], client)
 		}
@@ -268,7 +268,7 @@ func (p *Plugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Req
 	}
 	w.WriteHeader(200)
 	_ = encoder.Encode(struct {
-		Clients  map[int32][]ts3ClientInfo
+		Clients  map[int64][]ts3ClientInfo
 		Channels []ts3ChannelInfo
 	}{
 		Channels: p.channels,
