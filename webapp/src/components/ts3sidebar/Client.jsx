@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const Client = ({info}) => {
-    if (info.client_platform === 'os x') {
+    if (info.client_platform.toLowerCase() === 'os x' || info.client_platform.toLowerCase() === 'macos') {
         info.client_platform = 'apple';
     }
     return (
