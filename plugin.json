@@ -1,6 +1,6 @@
 {
     "id": "dev.svelle.plugin-teamspeak",
-    "name": "Mattermost Teamspeak Plugin",
+    "name": "Teamspeak",
     "description": "This plugin shows a list of channels and online users of a specified teamspeak server",
     "homepage_url": "https://github.com/svelle/mattermost-plugin-teamspeak",
     "support_url": "https://github.com/svelle/mattermost-plugin-teamspeak/issues",
