@@ -1,192 +1,145 @@
-# Plugin Starter Template
+# Mattermost TeamSpeak Plugin
 
-[![Build Status](https://github.com/mattermost/mattermost-plugin-starter-template/actions/workflows/ci.yml/badge.svg)](https://github.com/mattermost/mattermost-plugin-starter-template/actions/workflows/ci.yml)
-[![E2E Status](https://github.com/mattermost/mattermost-plugin-starter-template/actions/workflows/e2e.yml/badge.svg)](https://github.com/mattermost/mattermost-plugin-starter-template/actions/workflows/e2e.yml)
+A Mattermost plugin that integrates TeamSpeak 3 server information directly into your Mattermost workspace. View online users and channels from your TeamSpeak server without leaving Mattermost.
 
-This plugin serves as a starting point for writing a Mattermost plugin. Feel free to base your own plugin off this repository.
+## Features
 
-To learn more about plugins, see [our plugin documentation](https://developers.mattermost.com/extend/plugins/).
+- 📊 Real-time display of TeamSpeak channels and online users
+- 🔄 Automatic updates every 30 seconds
+- 👥 See user details including away status, idle time, and client information
+- 📱 Integrated into Mattermost's right-hand sidebar
+- 🔐 Secure connection using TeamSpeak's WebQuery API
 
-This template requires node v16 and npm v8. You can download and install nvm to manage your node versions by following the instructions [here](https://github.com/nvm-sh/nvm). Once you've setup the project simply run `nvm i` within the root folder to use the suggested version of node.
+## Requirements
 
-## Getting Started
-Use GitHub's template feature to make a copy of this repository by clicking the "Use this template" button.
+- Mattermost Server v6.2.1+
+- TeamSpeak 3 Server with WebQuery enabled
+- Go 1.22+ (for building from source)
+- Node.js and npm (for building from source)
 
-Alternatively shallow clone the repository matching your plugin name:
-```
-git clone --depth 1 https://github.com/mattermost/mattermost-plugin-starter-template com.example.my-plugin
-```
+## Installation
 
-Note that this project uses [Go modules](https://github.com/golang/go/wiki/Modules). Be sure to locate the project outside of `$GOPATH`.
+### From Release
 
-Edit the following files:
-1. `plugin.json` with your `id`, `name`, and `description`:
-```json
-{
-    "id": "com.example.my-plugin",
-    "name": "My Plugin",
-    "description": "A plugin to enhance Mattermost."
-}
-```
+1. Download the latest release from the [releases page](https://github.com/svelle/mattermost-plugin-teamspeak/releases)
+2. In Mattermost, go to **System Console > Plugins > Plugin Management**
+3. Click **Upload Plugin** and select the downloaded file
+4. Enable the plugin
 
-2. `go.mod` with your Go module path, following the `<hosting-site>/<repository>/<module>` convention:
-```
-module github.com/example/my-plugin
-```
+### From Source
 
-3. `.golangci.yml` with your Go module path:
-```yml
-linters-settings:
-  # [...]
-  goimports:
-    local-prefixes: github.com/example/my-plugin
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/svelle/mattermost-plugin-teamspeak.git
+   cd mattermost-plugin-teamspeak
+   ```
 
-Build your plugin:
-```
-make
-```
+2. Build the plugin:
+   ```bash
+   make dist
+   ```
 
-This will produce a single plugin file (with support for multiple architectures) for upload to your Mattermost server:
+3. Upload the generated `dist/*.tar.gz` file to your Mattermost server
 
-```
-dist/com.example.my-plugin.tar.gz
-```
+## Configuration
+
+After installing the plugin, configure it in **System Console > Plugins > TeamSpeak**:
+
+### Settings
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| **WebQuery URL** | The URL of your TeamSpeak server's WebQuery API | `http://127.0.0.1:10080` |
+| **API Key** | Your TeamSpeak WebQuery API key | *(required)* |
+| **Server ID** | TeamSpeak virtual server ID (if running multiple servers) | `1` |
+
+### Enabling TeamSpeak WebQuery
+
+1. Connect to your TeamSpeak server as ServerQuery Admin
+2. Enable the WebQuery module:
+   ```
+   serveredit virtualserver_weblist_enabled=1
+   ```
+3. Generate an API key:
+   ```
+   apikeyadd scope=manage lifetime=0
+   ```
+4. Note the generated API key for plugin configuration
+
+For detailed WebQuery setup, see the [TeamSpeak WebQuery documentation](https://community.teamspeak.com/t/webquery-discussion-help-3-12-0-onwards/7184).
+
+## Usage
+
+1. Click the TeamSpeak icon in the channel header
+2. The right-hand sidebar will open showing:
+   - All TeamSpeak channels in hierarchical order
+   - Online users in each channel
+   - User status indicators (away, muted, etc.)
+
+The display updates automatically every 30 seconds to reflect the current server state.
 
 ## Development
 
-To avoid having to manually install your plugin, build and deploy your plugin using one of the following options. In order for the below options to work, you must first enable plugin uploads via your config.json or API and restart Mattermost.
+### Prerequisites
 
-```json
-    "PluginSettings" : {
-        ...
-        "EnableUploads" : true
-    }
-```
+- Go 1.22+
+- Node.js 16+
+- Make
 
-### Deploying with Local Mode
+### Building
 
-If your Mattermost server is running locally, you can enable [local mode](https://docs.mattermost.com/administration/mmctl-cli-tool.html#local-mode) to streamline deploying your plugin. Edit your server configuration as follows:
-
-```json
-{
-    "ServiceSettings": {
-        ...
-        "EnableLocalMode": true,
-        "LocalModeSocketLocation": "/var/tmp/mattermost_local.socket"
-    },
-}
-```
-
-and then deploy your plugin:
-```
-make deploy
-```
-
-You may also customize the Unix socket path:
 ```bash
-export MM_LOCALSOCKETPATH=/var/tmp/alternate_local.socket
-make deploy
-```
+# Install dependencies
+make webapp/node_modules
 
-If developing a plugin with a webapp, watch for changes and deploy those automatically:
-```bash
-export MM_SERVICESETTINGS_SITEURL=http://localhost:8065
-export MM_ADMIN_TOKEN=j44acwd8obn78cdcx7koid4jkr
+# Run tests
+make test
+
+# Check code style
+make check-style
+
+# Build for development
+make dist
+
+# Watch mode for webapp development
 make watch
 ```
 
-### Deploying with credentials
+### Project Structure
 
-Alternatively, you can authenticate with the server's API with credentials:
-```bash
-export MM_SERVICESETTINGS_SITEURL=http://localhost:8065
-export MM_ADMIN_USERNAME=admin
-export MM_ADMIN_PASSWORD=password
-make deploy
+```
+├── server/          # Go backend
+│   ├── plugin.go    # Main plugin logic
+│   └── configuration.go # Settings management
+├── webapp/          # React frontend
+│   └── src/
+│       ├── components/
+│       │   ├── channel_header_button/
+│       │   └── ts3sidebar/
+│       └── index.tsx # Plugin entry point
+└── build/           # Build scripts and tools
 ```
 
-or with a [personal access token](https://docs.mattermost.com/developer/personal-access-tokens.html):
-```bash
-export MM_SERVICESETTINGS_SITEURL=http://localhost:8065
-export MM_ADMIN_TOKEN=j44acwd8obn78cdcx7koid4jkr
-make deploy
-```
+## Contributing
 
-### Releasing new versions
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-The version of a plugin is determined at compile time, automatically populating a `version` field in the [plugin manifest](plugin.json):
-* If the current commit matches a tag, the version will match after stripping any leading `v`, e.g. `1.3.1`.
-* Otherwise, the version will combine the nearest tag with `git rev-parse --short HEAD`, e.g. `1.3.1+d06e53e1`.
-* If there is no version tag, an empty version will be combined with the short hash, e.g. `0.0.0+76081421`.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-To disable this behaviour, manually populate and maintain the `version` field.
+## License
 
-## How to Release
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-To trigger a release, follow these steps:
+## Support
 
-1. **For Patch Release:** Run the following command:
-    ```
-    make patch
-    ```
-   This will release a patch change.
+- **Issues**: [GitHub Issues](https://github.com/svelle/mattermost-plugin-teamspeak/issues)
+- **Mattermost Plugin Documentation**: [developers.mattermost.com](https://developers.mattermost.com/extend/plugins/)
 
-2. **For Minor Release:** Run the following command:
-    ```
-    make minor
-    ```
-   This will release a minor change.
+## Acknowledgments
 
-3. **For Major Release:** Run the following command:
-    ```
-    make major
-    ```
-   This will release a major change.
-
-4. **For Patch Release Candidate (RC):** Run the following command:
-    ```
-    make patch-rc
-    ```
-   This will release a patch release candidate.
-
-5. **For Minor Release Candidate (RC):** Run the following command:
-    ```
-    make minor-rc
-    ```
-   This will release a minor release candidate.
-
-6. **For Major Release Candidate (RC):** Run the following command:
-    ```
-    make major-rc
-    ```
-   This will release a major release candidate.
-
-## Q&A
-
-### How do I make a server-only or web app-only plugin?
-
-Simply delete the `server` or `webapp` folders and remove the corresponding sections from `plugin.json`. The build scripts will skip the missing portions automatically.
-
-### How do I include assets in the plugin bundle?
-
-Place them into the `assets` directory. To use an asset at runtime, build the path to your asset and open as a regular file:
-
-```go
-bundlePath, err := p.API.GetBundlePath()
-if err != nil {
-    return errors.Wrap(err, "failed to get bundle path")
-}
-
-profileImage, err := ioutil.ReadFile(filepath.Join(bundlePath, "assets", "profile_image.png"))
-if err != nil {
-    return errors.Wrap(err, "failed to read profile image")
-}
-
-if appErr := p.API.SetProfileImage(userID, profileImage); appErr != nil {
-    return errors.Wrap(err, "failed to set profile image")
-}
-```
-
-### How do I build the plugin with unminified JavaScript?
-Setting the `MM_DEBUG` environment variable will invoke the debug builds. The simplist way to do this is to simply include this variable in your calls to `make` (e.g. `make dist MM_DEBUG=1`).
+- TeamSpeak is a registered trademark of TeamSpeak Systems GmbH
+- Built using the [Mattermost Plugin Starter Template](https://github.com/mattermost/mattermost-plugin-starter-template)
