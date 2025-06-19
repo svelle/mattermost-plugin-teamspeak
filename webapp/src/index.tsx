@@ -4,14 +4,15 @@
 import React from 'react';
 import type {Action, Store} from 'redux';
 
-import type {GlobalState} from 'mattermost-redux/types/store';
+import type {GlobalState} from '@mattermost/types/store';
 
 import ChannelHeaderButton from './components/channel_header_button/channel_header_button';
 import ChannelList from './components/ts3sidebar/ChannelList';
-import manifest from './manifest';
+
+import manifest from '@/manifest';
 import './ts3Styles.css';
 // eslint-disable-next-line import/no-unresolved
-import type {PluginRegistry} from './types/mattermost-webapp';
+import type {PluginRegistry} from '@/types/mattermost-webapp';
 
 export default class Plugin {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function

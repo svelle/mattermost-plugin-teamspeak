@@ -150,11 +150,11 @@ func (p *Plugin) updateData(ctx context.Context, time <-chan time.Time) {
 			return
 		case <-time:
 			if err := p.UpdateChannelList(); err != nil {
-				p.API.LogDebug(err.Error())
+				p.MattermostPlugin.API.LogDebug(err.Error())
 				continue
 			}
 			if err := p.UpdateClientList(); err != nil {
-				p.API.LogDebug(err.Error())
+				p.MattermostPlugin.API.LogDebug(err.Error())
 				continue
 			}
 		}
