@@ -38,12 +38,12 @@
                 "default": ""
             },
             {
-                "key": "ServerId",
-                "display_name": "Server Id:",
+                "key": "ServerID",
+                "display_name": "Server ID:",
                 "type": "number",
                 "help_text": "If multiple TeamSpeak servers are hosted on the same server you may need to change this.",
                 "placeholder": "1",
-                "default": "1"
+                "default": 1
             }
         ]
     }
